@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>深入淺出 Transformer：AI 魔法師的閱讀術</title>
+    <link rel="stylesheet" href="style.css">
+    <!--字體導入-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700&family=Roboto+Mono&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <!-- 行動裝置導覽切換（優化體驗） -->
+    <button class="mobile-toc-toggle" aria-label="切換目錄">☰ 目錄</button>
+
+    <div class="container">
+        <!-- 側邊固定式目錄 (Sticky Table of Contents) -->
+        <aside class="toc-sidebar">
+            <div class="toc-sticky-content">
+                <div class="toc-brand">
+                    <h3>技術專欄文件</h3>
+                    <p>Transformer 專題</p>
+                </div>
+                <nav class="toc-nav">
+                    <ul>
+                        <li><a href="#intro" class="toc-link active">前言：改變 AI 歷史的革命</a></li>
+                        <li><a href="#why-transformer" class="toc-link">1. 拋棄過去的累贅：為什麼我們需要 Transformer？</a></li>
+                        <li><a href="#self-attention" class="toc-link">2. 聚焦的魔法：自我注意力機制 (Self-Attention)</a></li>
+                        <li><a href="#multi-head" class="toc-link">3. 超能力觀察團：多頭注意力機制 (Multi-Head Attention)</a></li>
+                        <li><a href="#positional-encoding" class="toc-link">4. 給單字發號碼牌：位置編碼 (Positional Encoding)</a></li>
+                        <li><a href="#architecture" class="toc-link">5. AI 大師的誕生：完整架構解碼 (Encoder & Decoder)</a></li>
+                        <li><a href="#conclusion" class="toc-link">6. 結語：通往 AGI 的橋樑</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </aside>
+
+        <!-- 主要文章內容區塊 -->
+        <main class="content-main">
+            <!-- 文章標頭 -->
+            <header class="article-header" id="intro">
+                <span class="category-tag">深度學習與自然語言處理</span>
+                <h1>深入淺出 Transformer：AI 魔法師的閱讀術</h1>
+                <div class="article-meta">
+                    <span class="meta-author">作者：<strong>白羽墨影 (jerry880904)</strong></span>
+                    <span class="meta-date">發表日期：2026年6月</span>
+                    <span class="meta-reading-time">預估閱讀時間：12 分鐘</span>
+                </div>
+                <p class="lead-text">
+                    你是否好奇過，像 ChatGPT 這樣的 AI 是如何能像人類一樣，看一眼句子就能懂所有含義？這一切都源於 2017 年的一項傳奇論文《Attention Is All You Need》。本文將以直覺的比喻與嚴謹的邏輯，帶你一步步拆解這項改變世界的架構。
+                </p>
+            </header>
+
+            <!-- 區塊 1 -->
+            <section id="why-transformer" class="article-section">
+                <h2>1. 拋棄過去的累贅：為什麼我們需要 Transformer？</h2>
+                
+                <h3>過去的困境：慢速的「逐字抄寫員」 (RNN/LSTM)</h3>
+                <p>
+                    在 Transformer 問世之前，AI 閱讀文字就像是傳統的循環神經網路（RNN）。你可以想像這是一個<strong>「逐字抄寫員」</strong>。抄寫員在抄寫一個句子時，必須讀完第一個字，把它的記憶傳遞給下一個字，再讀第二個字... 這導致速度非常慢，完全浪費了現代 GPU 強大的算力。
+                </p>
+                <p>
+                    更糟糕的是，如果句子非常長，這個抄寫員讀到句子末尾時，往往已經忘記了開頭的內容。這就像你讀小說時，讀到第十章卻完全不記得第一章的細節了。
+                </p>
+                
+                <div class="article-figure">
+                    <img src="image_1_rnn_slowness.png" alt="傳統 RNN 逐字抄寫員的緩慢閱讀" />
+                    <div class="figure-caption">
+                        圖 1: 傳統 RNN 就像是一個慢速的「逐字抄寫員」。它必須讀完一個字，把記憶傳遞給下一個字，才能繼續。這導致它無法並行處理，且讀到後面會忘記前面的內容。
+                    </div>
+                </div>
+
+                <h3>Transformer 的革命：全速的「照相機」</h3>
+                <p>
+                    2017 年，Google 團隊發表了 Transformer 架構。它大膽地拋棄了傳統的循環結構，轉而使用<strong>注意力機制（Attention Mechanism）</strong>。它不再逐字閱讀，而是一口氣將整句話輸入模型。這種「全景式」的處理能力，徹底解決了長距離依賴問題，並讓模型訓練速度獲得了幾何級數的提升。
+                </p>
+
+                <div class="article-figure">
+                    <img src="image_2_transformer_camera.png" alt="Transformer 如同照相機一口氣拍下整個句子" />
+                    <div class="figure-caption">
+                        圖 2: Transformer 如同一台全速的「照相機」。它一口氣將整句話輸入模型，透過注意力機制（Attention Mechanism）同時捕捉所有單字之間的全面關係，徹底解決了長距離遺忘問題。
+                    </div>
+                </div>
+            </section>
+
+            <!-- 區塊 2 -->
+            <section id="self-attention" class="article-section">
+                <h2>2. 聚焦的魔法：自我注意力機制 (Self-Attention)</h2>
+                
+                <h3>生活比喻：雞尾酒會效應</h3>
+                <p>
+                    想像你正身處一個吵雜的雞尾酒會中，四處都是交談聲。雖然周遭充滿雜音，但當角落有人提到你的名字，或者聊到你非常感興趣的話題時，你的大腦會立刻過濾掉其他聲音，將聽覺焦距「對焦」到那個對話上。
+                </p>
+                <p>
+                    <strong>自我注意力機制（Self-Attention）</strong>做的事情一模一樣。當模型在理解一個單字時，它會看句子裡的其他單字，計算出哪些單字與當前單字關聯度最高，進而給予更高的「注意力權重」。
+                </p>
+
+                <div class="article-figure">
+                    <img src="image_3_self_attention_heatmap.png" alt="Self-Attention 當前字對句子中所有字的熱力圖" />
+                    <div class="figure-caption">
+                        圖 3: 這是一個自我注意力機制的熱力圖演示。當模型在看單字「it」時，其他單字會淡出。我們可以看到，模型對「animal」和「tired」給予了極高的關聯度，成功理解了「it」指代的是「animal」而非「street」。
+                    </div>
+                </div>
+            </section>
+
+            <!-- 區塊 3 -->
+            <section id="multi-head" class="article-section">
+                <h2>3. 超能力觀察團：多頭注意力機制 (Multi-Head Attention)</h2>
+                
+                <h3>為什麼一個注意力還不夠？</h3>
+                <p>
+                    如果我們只使用一種維度（單頭注意力）去理解句子，可能會錯失許多細節。這就像评選一件藝術品。如果評審團只有一個人，他可能只看重「色彩」；但如果我們組成一個多元評審團（有人看重「色彩」、有人研究「構圖」、有人解析「時代背景」），綜合出來的評價就會全面且深刻。
+                </p>
+                <p>
+                    <strong>Multi-Head Attention</strong> 就是同時初始化多個不同的「注意力觀察頭」（通常為 8 個）。每個「頭」獨立地在不同方面學習語意特徵：
+                </p>
+
+                <div class="article-figure">
+                    <img src="image_4_multi_head_attention_observation.png" alt="Multi-Head Attention 不同頭觀察同一個單字的不同層面" />
+                    <div class="figure-caption">
+                        圖 4: 多頭注意力機制的示意圖。不同「觀察頭」對同一個單字「eats」進行不同層面的觀察：頭1觀察「主語是誰」、頭2觀察「賓語是什麼」、頭3觀察「時態和語氣」。最後，模型會將這些觀察結果匯聚成一個全面的「eat」的含義。
+                    </div>
+                </div>
+            </section>
+
+            <!-- 區塊 4 -->
+            <section id="positional-encoding" class="article-section">
+                <h2>4. 給單字發號碼牌：位置編碼 (Positional Encoding)</h2>
+                
+                <h3>生活比喻：時間與空間號碼牌</h3>
+                <p>
+                    正如前面所述，Transformer 是一口氣把所有單字丟進模型做平行運算。這帶來一個巨大的副作用：模型失去了對「順序」的感知。對模型來說，"Dog eats fish" 和 "Fish eats dog" 的組成成分完全相同，如果沒有特殊處理，模型會認為這兩句話的意思一模一樣。
+                </p>
+                <p>
+                    為了打破這種「無序性」，我們必須在單字進入注意力機制之前，給它們發一張<strong>「時間與空間號碼牌」</strong>。這張號碼牌就是<strong>位置編碼（Positional Encoding）</strong>。模型在看單字時，不只是看它的含義，還會讀取它的條碼，知道它在句子裡的第幾個位置。
+                </p>
+
+                <div class="article-figure">
+                    <img src="image_5_positional_encoding_barcode.png" alt="位置編碼給單字發放獨特的號碼牌" />
+                    <div class="figure-caption">
+                        圖 5: 位置編碼的示意圖。模型為單字（編碼）下方添加了獨特的、帶有波形和數字序列的「位置條碼」（Pos_1, Pos_2...）。模型讀取這些條碼，就能輕易學習到單字之間的相對位置關係，從而區分出句子不同的含義。
+                    </div>
+                </div>
+            </section>
+
+            <!-- 區塊 5 -->
+            <section id="architecture" class="article-section">
+                <h2>5. AI 大師的誕生：完整架構解碼 (Encoder & Decoder)</h2>
+                <p>
+                    現在我們已經掌握了核心積木，讓我們將視野放大，看看整個 Transformer 是如何組裝的。經典的 Transformer 由兩大主體構成：一個負責「理解與消化」的工廠<strong>編碼器（Encoder）</strong>與一個負責「生成與翻譯」的工廠<strong>解碼器（Decoder）</strong>。
+                </p>
+
+                <div class="article-figure">
+                    <img src="image_6_encoder_decoder_factory.png" alt="Encoder-Decoder 工廠大樓" />
+                    <div class="figure-caption">
+                        圖 6: Transformer 的完整架構大樓。左半部（Encoder）負責接收英文「Hello, how are you?」，內部的自我注意力機制在消化並生成一個充滿關聯的「高維語意核心」。右半部（Decoder）接收這個核心，結合自己目前吐出的字，逐字生成中文「你好，你好嗎？」。
+                    </div>
+                </div>
+
+                <div class="callout-block default">
+                    <h4>⚙️ 現代的大模型演變：</h4>
+                    <p>雖然原版架構是 Encoder-Decoder 兩者兼具，但當今大模型走向了不同的分化道路：</p>
+                    <ul>
+                        <li><strong>僅包含 Encoder：</strong> 如 BERT，擅長文本理解、分類與填空。
+                            <img src="image_7_bert_scholar.png" alt="僅包含 Encoder 的 BERT 學者" class="model-variation-img" />
+                            <div class="figure-caption">圖 7.1: 僅包含 Encoder 的 BERT 就像一個戴著眼鏡、專注閱讀和分類文件的學者。</div>
+                        </li>
+                        <li><strong>僅包含 Decoder：</strong> 如 GPT 系列、Claude、Llama，專精於文字自迴歸生成（Auto-regressive Generation）。
+                            <img src="image_8_gpt_magician.png" alt="僅包含 Decoder 的 GPT 魔法師" class="model-variation-img" />
+                            <div class="figure-caption">圖 7.2: 僅包含 Decoder 的 GPT 就像一個戴著魔法帽、專注用魔法棒逐字生成文字鏈的魔法師。</div>
+                        </li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- 區塊 6 -->
+            <section id="conclusion" class="article-section">
+                <h2>6. 結語：通往 AGI 的重要橋樑</h2>
+                <p>
+                    Transformer 的成功，向全世界證明了「只要資料量夠大、模型參數夠多、算力夠強，注意力機制就能展現出近乎智慧的泛化能力」。它不僅改變了文字處理（NLP），更進一步跨足電腦視覺（ViT）、語音識別以及多模態領域。
+                </p>
+            </section>
+
+            <!-- 頁尾宣告 -->
+            <footer class="article-footer">
+                <p>© 2026 Designed & Written by <span class="author-name">白羽墨影 (jerry880904)</span>. 本技術專案採 MIT 授權開源。</p>
+                <p class="footer-subtext">技術棧：Semantic HTML5, Modular CSS3, Vanilla JavaScript (Intersection Observer)</p>
+            </footer>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
