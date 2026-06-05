@@ -5,18 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>深入淺出 Transformer：AI 魔法師的閱讀術</title>
     <link rel="stylesheet" href="style.css">
-    <!--字體導入-->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700&family=Roboto+Mono&display=swap" rel="stylesheet">
 </head>
 <body>
 
-    <!-- 行動裝置導覽切換（優化體驗） -->
     <button class="mobile-toc-toggle" aria-label="切換目錄">☰ 目錄</button>
 
     <div class="container">
-        <!-- 側邊固定式目錄 (Sticky Table of Contents) -->
         <aside class="toc-sidebar">
             <div class="toc-sticky-content">
                 <div class="toc-brand">
@@ -26,166 +23,248 @@
                 <nav class="toc-nav">
                     <ul>
                         <li><a href="#intro" class="toc-link active">前言：改變 AI 歷史的革命</a></li>
-                        <li><a href="#why-transformer" class="toc-link">1. 拋棄過去的累贅：為什麼我們需要 Transformer？</a></li>
-                        <li><a href="#self-attention" class="toc-link">2. 聚焦的魔法：自我注意力機制 (Self-Attention)</a></li>
-                        <li><a href="#multi-head" class="toc-link">3. 超能力觀察團：多頭注意力機制 (Multi-Head Attention)</a></li>
-                        <li><a href="#positional-encoding" class="toc-link">4. 給單字發號碼牌：位置編碼 (Positional Encoding)</a></li>
-                        <li><a href="#architecture" class="toc-link">5. AI 大師的誕生：完整架構解碼 (Encoder & Decoder)</a></li>
-                        <li><a href="#conclusion" class="toc-link">6. 結語：通往 AGI 的橋樑</a></li>
+                        
+                        <li>
+                            <a href="#part1" class="toc-link">一、介紹 Transformer 演算法</a>
+                            <ul class="toc-subnav">
+                                <li><a href="#why-transformer" class="toc-link">1. 為什麼需要 Transformer？</a></li>
+                                <li><a href="#self-attention" class="toc-link">2. 自我注意力機制</a></li>
+                                <li><a href="#multi-head" class="toc-link">3. 多頭注意力機制</a></li>
+                                <li><a href="#positional-encoding" class="toc-link">4. 位置編碼</a></li>
+                                <li><a href="#architecture" class="toc-link">5. 完整架構解碼</a></li>
+                            </ul>
+                        </li>
+                        
+                        <li>
+                            <a href="#part2" class="toc-link">二、跨界宇宙與衍生模型</a>
+                            <ul class="toc-subnav">
+                                <li><a href="#llm" class="toc-link">1. 大語言模型 (LLM)</a></li>
+                                <li><a href="#cv" class="toc-link">2. 電腦視覺 (CV)</a></li>
+                                <li><a href="#time-series" class="toc-link">3. 時間序列分析</a></li>
+                                <li><a href="#audio" class="toc-link">4. 語音與音訊處理</a></li>
+                                <li><a href="#multimodal" class="toc-link">5. 多模態與影像生成</a></li>
+                                <li><a href="#science" class="toc-link">6. 科學研究 AlphaFold</a></li>
+                            </ul>
+                        </li>
+                        
+                        <li>
+                            <a href="#part3" class="toc-link">三、未來趨勢</a>
+                            <ul class="toc-subnav">
+                                <li><a href="#edge-ai" class="toc-link">1. 邊緣運算與輕量化</a></li>
+                                <li><a href="#context-window" class="toc-link">2. 超長上下文窗口</a></li>
+                            </ul>
+                        </li>
+                        
+                        <li>
+                            <a href="#part4" class="toc-link">四、反思</a>
+                            <ul class="toc-subnav">
+                                <li><a href="#computing-power" class="toc-link">1. 算力霸權與環境隱憂</a></li>
+                                <li><a href="#black-box" class="toc-link">2. AI 幻覺與可解釋性</a></li>
+                            </ul>
+                        </li>
+                        
+                        <li>
+                            <a href="#part5" class="toc-link">五、結語</a>
+                            <ul class="toc-subnav">
+                                <li><a href="#giant-shoulders" class="toc-link">1. 站在巨人的肩膀上</a></li>
+                                <li><a href="#agi-dawn" class="toc-link">2. 迎接 AGI 的曙光</a></li>
+                            </ul>
+                        </li>
                     </ul>
                 </nav>
             </div>
         </aside>
 
-        <!-- 主要文章內容區塊 -->
         <main class="content-main">
-            <!-- 文章標頭 -->
             <header class="article-header" id="intro">
                 <span class="category-tag">深度學習與自然語言處理</span>
-                <h1>深入淺出 Transformer：AI 魔法師的閱讀術</h1>
+                <h1>前言：改變 AI 歷史的革命</h1>
                 <div class="article-meta">
-                    <span class="meta-author">作者：<strong>白羽墨影 (jerry880904)</strong></span>
+                    <span class="meta-author">作者：<strong>黃昱翔(資二甲 111316029)</strong></span>
                     <span class="meta-date">發表日期：2026年6月</span>
-                    <span class="meta-reading-time">預估閱讀時間：12 分鐘</span>
+                    <span class="meta-reading-time">預估閱讀時間：15 分鐘</span>
                 </div>
                 <p class="lead-text">
                     你是否好奇過，像 ChatGPT 這樣的 AI 是如何能像人類一樣，看一眼句子就能懂所有含義？這一切都源於 2017 年的一項傳奇論文《Attention Is All You Need》。本文將以直覺的比喻與嚴謹的邏輯，帶你一步步拆解這項改變世界的架構。
                 </p>
             </header>
 
-            <!-- 區塊 1 -->
-            <section id="why-transformer" class="article-section">
-                <h2>1. 拋棄過去的累贅：為什麼我們需要 Transformer？</h2>
+            <section id="part1" class="article-section">
+                <h2>一、介紹 Transformer 演算法</h2>
                 
-                <h3>過去的困境：慢速的「逐字抄寫員」 (RNN/LSTM)</h3>
+                <h3 id="why-transformer">1. 拋棄過去的累贅：為什麼我們需要 Transformer？</h3>
                 <p>
                     在 Transformer 問世之前，AI 閱讀文字就像是傳統的循環神經網路（RNN）。你可以想像這是一個<strong>「逐字抄寫員」</strong>。抄寫員在抄寫一個句子時，必須讀完第一個字，把它的記憶傳遞給下一個字，再讀第二個字... 這導致速度非常慢，完全浪費了現代 GPU 強大的算力。
                 </p>
-                <p>
-                    更糟糕的是，如果句子非常長，這個抄寫員讀到句子末尾時，往往已經忘記了開頭的內容。這就像你讀小說時，讀到第十章卻完全不記得第一章的細節了。
-                </p>
-                
                 <div class="article-figure">
                     <img src="image_1_rnn_slowness.png" alt="傳統 RNN 逐字抄寫員的緩慢閱讀" />
                     <div class="figure-caption">
-                        圖 1: 傳統 RNN 就像是一個慢速的「逐字抄寫員」。它必須讀完一個字，把記憶傳遞給下一個字，才能繼續。這導致它無法並行處理，且讀到後面會忘記前面的內容。
+                        圖 1: 傳統 RNN 就像是一個慢速的「逐字抄寫員」。它必須讀完一個字，把記憶傳遞給下一個字，才能繼續。
                     </div>
                 </div>
 
-                <h3>Transformer 的革命：全速的「照相機」</h3>
                 <p>
-                    2017 年，Google 團隊發表了 Transformer 架構。它大膽地拋棄了傳統的循環結構，轉而使用<strong>注意力機制（Attention Mechanism）</strong>。它不再逐字閱讀，而是一口氣將整句話輸入模型。這種「全景式」的處理能力，徹底解決了長距離依賴問題，並讓模型訓練速度獲得了幾何級數的提升。
+                    2017 年，Google 團隊發表了 Transformer 架構。它大膽地拋棄了傳統的循環結構，轉而使用<strong>注意力機制（Attention Mechanism）</strong>。它不再逐字閱讀，而是一口氣將整句話輸入模型。這種「全景式」的處理能力，徹底解決了長距離依賴問題。
                 </p>
-
                 <div class="article-figure">
                     <img src="image_2_transformer_camera.png" alt="Transformer 如同照相機一口氣拍下整個句子" />
                     <div class="figure-caption">
-                        圖 2: Transformer 如同一台全速的「照相機」。它一口氣將整句話輸入模型，透過注意力機制（Attention Mechanism）同時捕捉所有單字之間的全面關係，徹底解決了長距離遺忘問題。
+                        圖 2: Transformer 如同一台全速的「照相機」。它一口氣將整句話輸入模型，同時捕捉所有單字之間的全面關係。
                     </div>
                 </div>
-            </section>
 
-            <!-- 區塊 2 -->
-            <section id="self-attention" class="article-section">
-                <h2>2. 聚焦的魔法：自我注意力機制 (Self-Attention)</h2>
-                
-                <h3>生活比喻：雞尾酒會效應</h3>
+                <h3 id="self-attention">2. 聚焦的魔法：自我注意力機制 (Self-Attention)</h3>
                 <p>
-                    想像你正身處一個吵雜的雞尾酒會中，四處都是交談聲。雖然周遭充滿雜音，但當角落有人提到你的名字，或者聊到你非常感興趣的話題時，你的大腦會立刻過濾掉其他聲音，將聽覺焦距「對焦」到那個對話上。
+                    想像你正身處一個吵雜的雞尾酒會中，雖然周遭充滿雜音，但當角落有人提到你的名字，你的大腦會立刻將聽覺焦距「對焦」到那個對話上。<strong>自我注意力機制</strong>做的事情一模一樣。當模型在理解一個單字時，它會看句子裡的其他單字，計算出哪些單字與當前單字關聯度最高，進而給予更高的「注意力權重」。
                 </p>
-                <p>
-                    <strong>自我注意力機制（Self-Attention）</strong>做的事情一模一樣。當模型在理解一個單字時，它會看句子裡的其他單字，計算出哪些單字與當前單字關聯度最高，進而給予更高的「注意力權重」。
-                </p>
-
                 <div class="article-figure">
-                    <img src="image_3_self_attention_heatmap.png" alt="Self-Attention 當前字對句子中所有字的熱力圖" />
+                    <img src="image_3_self_attention_heatmap.png" alt="Self-Attention 熱力圖" />
                     <div class="figure-caption">
-                        圖 3: 這是一個自我注意力機制的熱力圖演示。當模型在看單字「it」時，其他單字會淡出。我們可以看到，模型對「animal」和「tired」給予了極高的關聯度，成功理解了「it」指代的是「animal」而非「street」。
+                        圖 3: 透過自我注意力機制，模型可以判斷出代名詞 "it" 指代的是哪一個名詞。
                     </div>
                 </div>
-            </section>
 
-            <!-- 區塊 3 -->
-            <section id="multi-head" class="article-section">
-                <h2>3. 超能力觀察團：多頭注意力機制 (Multi-Head Attention)</h2>
-                
-                <h3>為什麼一個注意力還不夠？</h3>
+                <h3 id="multi-head">3. 超能力觀察團：多頭注意力機制 (Multi-Head Attention)</h3>
                 <p>
-                    如果我們只使用一種維度（單頭注意力）去理解句子，可能會錯失許多細節。這就像评選一件藝術品。如果評審團只有一個人，他可能只看重「色彩」；但如果我們組成一個多元評審團（有人看重「色彩」、有人研究「構圖」、有人解析「時代背景」），綜合出來的評價就會全面且深刻。
+                    如果只使用一種維度去理解句子，可能會錯失細節。<strong>Multi-Head Attention</strong> 就是同時初始化多個不同的「注意力觀察頭」。每個「頭」獨立地在不同方面學習語意特徵（例如有人看主詞、有人看時態），最後再將觀察結果匯聚成全面的含義。
                 </p>
-                <p>
-                    <strong>Multi-Head Attention</strong> 就是同時初始化多個不同的「注意力觀察頭」（通常為 8 個）。每個「頭」獨立地在不同方面學習語意特徵：
-                </p>
-
                 <div class="article-figure">
-                    <img src="image_4_multi_head_attention_observation.png" alt="Multi-Head Attention 不同頭觀察同一個單字的不同層面" />
+                    <img src="image_4_multi_head_attention_observation.png" alt="Multi-Head Attention 示意圖" />
                     <div class="figure-caption">
-                        圖 4: 多頭注意力機制的示意圖。不同「觀察頭」對同一個單字「eats」進行不同層面的觀察：頭1觀察「主語是誰」、頭2觀察「賓語是什麼」、頭3觀察「時態和語氣」。最後，模型會將這些觀察結果匯聚成一個全面的「eat」的含義。
+                        圖 4: 多頭注意力機制的示意圖。不同「觀察頭」對同一個單字進行不同層面的觀察。
                     </div>
                 </div>
-            </section>
 
-            <!-- 區塊 4 -->
-            <section id="positional-encoding" class="article-section">
-                <h2>4. 給單字發號碼牌：位置編碼 (Positional Encoding)</h2>
-                
-                <h3>生活比喻：時間與空間號碼牌</h3>
+                <h3 id="positional-encoding">4. 給單字發號碼牌：位置編碼 (Positional Encoding)</h3>
                 <p>
-                    正如前面所述，Transformer 是一口氣把所有單字丟進模型做平行運算。這帶來一個巨大的副作用：模型失去了對「順序」的感知。對模型來說，"Dog eats fish" 和 "Fish eats dog" 的組成成分完全相同，如果沒有特殊處理，模型會認為這兩句話的意思一模一樣。
+                    因為 Transformer 是一口氣把所有單字丟進模型做平行運算，模型會失去對「順序」的感知。為了打破無序性，我們必須在單字進入注意力機制之前，給它們發一張<strong>「時間與空間號碼牌」</strong>。這就是位置編碼（Positional Encoding），幫助模型區分 "Dog eats fish" 和 "Fish eats dog" 的差別。
                 </p>
-                <p>
-                    為了打破這種「無序性」，我們必須在單字進入注意力機制之前，給它們發一張<strong>「時間與空間號碼牌」</strong>。這張號碼牌就是<strong>位置編碼（Positional Encoding）</strong>。模型在看單字時，不只是看它的含義，還會讀取它的條碼，知道它在句子裡的第幾個位置。
-                </p>
-
                 <div class="article-figure">
-                    <img src="image_5_positional_encoding_barcode.png" alt="位置編碼給單字發放獨特的號碼牌" />
+                    <img src="image_5_positional_encoding_barcode.png" alt="位置編碼示意圖" />
                     <div class="figure-caption">
-                        圖 5: 位置編碼的示意圖。模型為單字（編碼）下方添加了獨特的、帶有波形和數字序列的「位置條碼」（Pos_1, Pos_2...）。模型讀取這些條碼，就能輕易學習到單字之間的相對位置關係，從而區分出句子不同的含義。
+                        圖 5: 模型讀取位置條碼，就能輕易學習到單字之間的相對位置關係。
                     </div>
                 </div>
-            </section>
 
-            <!-- 區塊 5 -->
-            <section id="architecture" class="article-section">
-                <h2>5. AI 大師的誕生：完整架構解碼 (Encoder & Decoder)</h2>
+                <h3 id="architecture">5. AI 大師的誕生：完整架構解碼 (Encoder & Decoder)</h3>
                 <p>
-                    現在我們已經掌握了核心積木，讓我們將視野放大，看看整個 Transformer 是如何組裝的。經典的 Transformer 由兩大主體構成：一個負責「理解與消化」的工廠<strong>編碼器（Encoder）</strong>與一個負責「生成與翻譯」的工廠<strong>解碼器（Decoder）</strong>。
+                    經典的 Transformer 由兩大主體構成：一個負責「理解與消化」的工廠<strong>編碼器（Encoder）</strong>，與一個負責「生成與翻譯」的工廠<strong>解碼器（Decoder）</strong>。
                 </p>
-
                 <div class="article-figure">
                     <img src="image_6_encoder_decoder_factory.png" alt="Encoder-Decoder 工廠大樓" />
                     <div class="figure-caption">
-                        圖 6: Transformer 的完整架構大樓。左半部（Encoder）負責接收英文「Hello, how are you?」，內部的自我注意力機制在消化並生成一個充滿關聯的「高維語意核心」。右半部（Decoder）接收這個核心，結合自己目前吐出的字，逐字生成中文「你好，你好嗎？」。
+                        圖 6: Transformer 的完整架構大樓。左半部（Encoder）負責消化生成語意核心，右半部（Decoder）接收核心並逐字生成翻譯或回覆。
                     </div>
-                </div>
-
-                <div class="callout-block default">
-                    <h4>⚙️ 現代的大模型演變：</h4>
-                    <p>雖然原版架構是 Encoder-Decoder 兩者兼具，但當今大模型走向了不同的分化道路：</p>
-                    <ul>
-                        <li><strong>僅包含 Encoder：</strong> 如 BERT，擅長文本理解、分類與填空。
-                            <img src="image_7_bert_scholar.png" alt="僅包含 Encoder 的 BERT 學者" class="model-variation-img" />
-                            <div class="figure-caption">圖 7.1: 僅包含 Encoder 的 BERT 就像一個戴著眼鏡、專注閱讀和分類文件的學者。</div>
-                        </li>
-                        <li><strong>僅包含 Decoder：</strong> 如 GPT 系列、Claude、Llama，專精於文字自迴歸生成（Auto-regressive Generation）。
-                            <img src="image_8_gpt_magician.png" alt="僅包含 Decoder 的 GPT 魔法師" class="model-variation-img" />
-                            <div class="figure-caption">圖 7.2: 僅包含 Decoder 的 GPT 就像一個戴著魔法帽、專注用魔法棒逐字生成文字鏈的魔法師。</div>
-                        </li>
-                    </ul>
                 </div>
             </section>
 
-            <!-- 區塊 6 -->
-            <section id="conclusion" class="article-section">
-                <h2>6. 結語：通往 AGI 的重要橋樑</h2>
+            <section id="part2" class="article-section">
+                <h2>二、Transformer 的跨界宇宙與衍生模型</h2>
+                
+                <p class="lead-text">
+                    掌握了 Transformer 的核心積木與精妙的「雙工廠架構」後，你可能會好奇：這套理論在現實中到底造就了哪些厲害的 AI 應用？<br><br>
+                    自 2017 年論文發表以來，科學家們發現這套架構簡直是無所不能的「樂高積木」。透過自由拆解、重組或瘋狂放大編碼器（Encoder）與解碼器（Decoder），繁衍出了一個極其龐大的 AI 模型家族。更令人驚訝的是，它不再侷限於「閱讀文字」，而是跨越了感官的界線，成為統一天下演算法的霸主。接下來，我們將走進這個多姿多彩的 AI 家族，看看 Transformer 如何在各個領域掀起革命。
+                </p>
+
+                <h3 id="llm">1. 語言的極致煉金術：大語言模型 (LLM)</h3>
                 <p>
-                    Transformer 的成功，向全世界證明了「只要資料量夠大、模型參數夠多、算力夠強，注意力機制就能展現出近乎智慧的泛化能力」。它不僅改變了文字處理（NLP），更進一步跨足電腦視覺（ViT）、語音識別以及多模態領域。
+                    將解碼器（Decoder）發揮到極致的產物，專精於文字接龍與深度推理。
+                </p>
+                <div class="callout-block default">
+                    <h4>🌟 代表模型：</h4>
+                    <p>OpenAI 的 <strong>GPT-4</strong>、Anthropic 的 <strong>Claude 3</strong>，以及 Meta 的開源巨頭 <strong>Llama 3</strong>。</p>
+                </div>
+
+                <h3 id="cv">2. 視覺的全新維度：電腦視覺 (Computer Vision)</h3>
+                <p>
+                    過去由卷積神經網路（CNN）統治的圖像領域，如今也被 Transformer 攻破。它將圖片切成無數個「小拼圖（Patches）」，讓 AI 像閱讀單字一樣去理解圖像中不同區塊的關聯性。
+                </p>
+                <div class="callout-block default">
+                    <h4>🌟 代表模型：</h4>
+                    <p>Google 的 <strong>Vision Transformer (ViT)</strong> 以及微軟的 <strong>Swin Transformer</strong>。</p>
+                </div>
+
+                <h3 id="time-series">3. 預見未來的先知：時間序列分析 (Time Series Forecasting)</h3>
+                <p>
+                    透過強大的長距離注意力機制，捕捉數據隨時間變化的週期與趨勢。這項技術極其適合應用於氣象預報、電網負載分析，甚至是台股市場的 AI 即時選股策略與個人資產預測。
+                </p>
+                <div class="callout-block default">
+                    <h4>🌟 代表模型：</h4>
+                    <p><strong>Informer</strong>、<strong>Autoformer</strong> 與 <strong>PatchTST</strong>。</p>
+                </div>
+
+                <h3 id="audio">4. 傾聽世界的耳朵：語音與音訊處理 (Audio & Speech)</h3>
+                <p>
+                    將聲波訊號轉換為特徵序列，讓模型不僅能精準將語音轉譯為文字，還能聽懂語氣、情緒與多國語言的切換。
+                </p>
+                <div class="callout-block default">
+                    <h4>🌟 代表模型：</h4>
+                    <p>OpenAI 的 <strong>Whisper</strong>（最強大的開源語音辨識模型）與 Meta 的 <strong>HuBERT</strong>。</p>
+                </div>
+
+                <h3 id="multimodal">5. 跨越感官的創世神：多模態與影像生成 (Multimodal & Generative AI)</h3>
+                <p>
+                    結合了文字與視覺，讓 AI 能夠理解「文字指令（Prompt）」並無中生有地創造出高畫質圖片或物理世界流暢的影片，將人類的「詠唱」變為現實。
+                </p>
+                <div class="callout-block default">
+                    <h4>🌟 代表模型：</h4>
+                    <p>影片生成模型 <strong>Sora</strong>、圖像生成模型 <strong>DALL-E 3</strong> 與 <strong>Midjourney</strong>。</p>
+                </div>
+
+                <h3 id="science">6. 解開生命密碼的鑰匙：科學研究 (AI for Science)</h3>
+                <p>
+                    運用空間位置編碼與注意力機制，精準預測氨基酸序列如何摺疊成 3D 蛋白質結構，把原本需要耗費數年的生物學實驗縮短至幾分鐘。
+                </p>
+                <div class="callout-block default">
+                    <h4>🌟 代表模型：</h4>
+                    <p>DeepMind 的 <strong>AlphaFold 3</strong>。</p>
+                </div>
+            </section>
+
+            <section id="part3" class="article-section">
+                <h2>三、未來趨勢</h2>
+                
+                <h3 id="edge-ai">1. 擺脫算力巨獸：邊緣運算與輕量化</h3>
+                <p>
+                    未來的 AI 不會只存在於巨大的雲端機房。目前的趨勢是將龐大的 Transformer 模型進行「量化（Quantization）」與「剪枝（Pruning）」，發展出輕量級語言模型（SLM）。目標是讓強大的 AI 能夠直接在手機、筆記型電腦，甚至是微控制器（如 Arduino 等硬體設備）上離線且即時運行。
+                </p>
+
+                <h3 id="context-window">2. 無限記憶的挑戰：超長上下文窗口</h3>
+                <p>
+                    早期的模型只能記住幾千個字，但現代 AI 正試圖吞下整座圖書館。未來的技術將致力於突破注意力機制中「運算量呈二次方增長」的物理瓶頸（例如發展 Linear Attention 或 Mamba架構），讓模型能夠一次性讀完數百萬字、整份財報或超長篇的程式碼專案而不會遺忘。
                 </p>
             </section>
 
-            <!-- 頁尾宣告 -->
+            <section id="part4" class="article-section">
+                <h2>四、反思</h2>
+                
+                <h3 id="computing-power">1. 昂貴的智慧：算力霸權與環境隱憂</h3>
+                <p>
+                    訓練先進的 Transformer 模型需要成千上萬張高階 GPU 日以漸夜地運轉。這不僅讓頂尖 AI 的開發成為少數科技巨頭的「資本遊戲」，其背後消耗的龐大電力與水資源也帶來了不容忽視的環境碳排放問題。我們必須思考：在追求極致效能的同時，如何讓 AI 變得更「綠色」？
+                </p>
+
+                <h3 id="black-box">2. 黑盒子裡的幽靈：AI 幻覺與可解釋性</h3>
+                <p>
+                    儘管注意力機制能生成邏輯嚴密、流暢優美的文字，但 Transformer 本質上仍是基於機率分佈的「黑盒子」。它有時會無中生有，產生「一本正經胡說八道」的 AI 幻覺（Hallucination）。我們依然難以完全透視它內部決策的邏輯，這在醫療、法律等要求絕對精準的領域，仍是一大隱患。
+                </p>
+            </section>
+
+            <section id="part5" class="article-section">
+                <h2>五、結語</h2>
+                
+                <h3 id="giant-shoulders">1. 站在巨人的肩膀上</h3>
+                <p>
+                    Transformer 並不是一顆憑空掉下來的隕石，它是建立在神經網路、詞向量、循環神經網路等無數前人研究的基礎上。然而，它卻以最優雅、最直覺的「注意力機制」，一語道破了人類閱讀與理解資訊的奧秘。
+                </p>
+
+                <h3 id="agi-dawn">2. 迎接 AGI 的曙光</h3>
+                <p>
+                    從 BERT 的神級閱讀理解，到大語言模型顛覆世界的生成能力，再到如今預測蛋白質結構的 AlphaFold。Transformer 用事實向人類證明了：只要架構正確，配合海量的資料與算力，AI 就能產生近乎人類智慧的泛化能力。它不僅僅是一個劃時代的演算法，更是人類通往通用人工智慧（AGI）道路上，最耀眼也最堅實的一座黃金橋樑。
+                </p>
+            </section>
+
             <footer class="article-footer">
-                <p>© 2026 Designed & Written by <span class="author-name">白羽墨影 (jerry880904)</span>. 本技術專案採 MIT 授權開源。</p>
+                <p>© 2026 Designed & Written by <span class="author-name">黃昱翔(資二甲 111316029)</span>. 本技術專案採 MIT 授權開源。</p>
                 <p class="footer-subtext">技術棧：Semantic HTML5, Modular CSS3, Vanilla JavaScript (Intersection Observer)</p>
             </footer>
         </main>
