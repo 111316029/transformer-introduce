@@ -419,3 +419,45 @@ p {
     background-color: rgba(217, 56, 58, 0.03);
     padding-left: 16px;
 }
+
+/* ==========================================================================
+   8. 自我注意力機制互動區塊樣式 (Self-Attention Visualizer)
+   ========================================================================== */
+.attention-visualizer {
+    margin: 30px auto;
+    padding: 25px;
+    background-color: #f8f9fa;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    text-align: center;
+    font-size: 1.3rem;
+    letter-spacing: 1px;
+    max-width: 800px;
+}
+
+.attention-visualizer .token {
+    display: inline-block;
+    padding: 2px 6px;
+    margin: 0 3px;
+    border-radius: 4px;
+    transition: var(--transition-smooth);
+}
+
+.attention-visualizer .highlight-trigger {
+    font-weight: bold;
+    cursor: pointer;
+    border-bottom: 2px dashed var(--accent-academic);
+}
+
+/* 高權重單字（如 animal），由 JS 動態加入 */
+.attention-visualizer .token.attention-active {
+    background-color: rgba(27, 79, 114, 0.15); 
+    color: var(--accent-academic);
+    font-weight: bold;
+    transform: scale(1.08);
+}
+
+/* 低權重單字（其他無關字詞），由 JS 動態加入 */
+.attention-visualizer .token.attention-low {
+    opacity: 0.35;
+}
