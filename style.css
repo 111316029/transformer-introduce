@@ -345,3 +345,77 @@ p {
         display: block;
     }
 }
+
+/* ==========================================================================
+   6. 模型小標籤專屬樣式 (Model Badges Styling)
+   ========================================================================== */
+
+/* 小標籤通用基礎設定 */
+.model-badge {
+    display: inline-block;
+    padding: 4px 10px;
+    font-size: 0.8rem;
+    font-family: var(--font-sans);
+    font-weight: bold;
+    color: #ffffff;
+    border-radius: 4px;
+    margin-right: 12px;
+    vertical-align: middle;
+    letter-spacing: 0.5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+}
+
+/* Encoder 架構標籤：使用穩重的科技藍 */
+.badge-encoder {
+    background: linear-gradient(135deg, #2980b9, #1f618d);
+}
+
+/* Decoder 架構標籤：使用代表生成與活力的翠綠 */
+.badge-decoder {
+    background: linear-gradient(135deg, #27ae60, #1e8449);
+}
+
+/* 完整兩欄架構標籤：使用全能的典雅極光橘 */
+.badge-full {
+    background: linear-gradient(135deg, #e67e22, #b9770e);
+}
+
+/* 微調含有標籤的 h3 標題，使其排版更對齊美觀 */
+.article-section h3 {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 4px;
+    line-height: 1.5;
+}
+
+/* ==========================================================================
+   7. 側邊欄二級子目錄樣式 (TOC Sub-navigation)
+   ========================================================================== */
+.toc-subnav {
+    list-style: none;
+    padding-left: 15px; /* 子目錄向右縮進 */
+    margin: 4px 0 8px 0;
+}
+
+.toc-subnav a {
+    font-size: 0.85rem; /* 字體稍微縮小 */
+    padding: 3px 12px;
+    color: var(--text-secondary);
+    font-weight: normal;
+    border-left: 1px solid var(--border-color); /* 左側淡淡的導引線 */
+}
+
+.toc-subnav a:hover {
+    color: var(--accent-academic);
+    padding-left: 16px;
+    border-left-color: var(--accent-academic);
+}
+
+.toc-subnav a.active {
+    color: var(--accent-active);
+    font-weight: bold;
+    border-left: 2px solid var(--accent-active);
+    background-color: rgba(217, 56, 58, 0.03);
+    padding-left: 16px;
+}

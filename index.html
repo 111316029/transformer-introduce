@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>深入淺出 Transformer：AI 魔法師的閱讀術</title>
+    <title>深入淺出 Transformer </title>
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -32,6 +32,7 @@
                                 <li><a href="#multi-head" class="toc-link">3. 多頭注意力機制</a></li>
                                 <li><a href="#positional-encoding" class="toc-link">4. 位置編碼</a></li>
                                 <li><a href="#architecture" class="toc-link">5. 完整架構解碼</a></li>
+                                <li><a href="#qkv" class="toc-link">6. 核心運作密碼：K, Q, V</a></li>
                             </ul>
                         </li>
                         
@@ -85,7 +86,7 @@
                     <span class="meta-reading-time">預估閱讀時間：15 分鐘</span>
                 </div>
                 <p class="lead-text">
-                    你是否好奇過，像 ChatGPT 這樣的 AI 是如何能像人類一樣，看一眼句子就能懂所有含義？這一切都源於 2017 年的一項傳奇論文《Attention Is All You Need》。本文將以直覺的比喻與嚴謹的邏輯，帶你一步步拆解這項改變世界的架構。
+                    你是否好奇過，像 ChatGPT 這樣的 AI 是如何能像人類一樣，看一眼句子就能懂所有含義？這一切都源於 2017 年的一項傳奇論文《<a href="NIPS-2017-attention-is-all-you-need-Paper.pdf" target="_blank" rel="noopener noreferrer">Attention Is All You Need</a>》。本文將以直覺的比喻與嚴謹的邏輯，帶你一步步拆解這項改變世界的架構。
                 </p>
             </header>
 
@@ -96,66 +97,134 @@
                 <p>
                     在 Transformer 問世之前，AI 閱讀文字就像是傳統的循環神經網路（RNN）。你可以想像這是一個<strong>「逐字抄寫員」</strong>。抄寫員在抄寫一個句子時，必須讀完第一個字，把它的記憶傳遞給下一個字，再讀第二個字... 這導致速度非常慢，完全浪費了現代 GPU 強大的算力。
                 </p>
-                <div class="article-figure">
-                    <img src="image_1_rnn_slowness.png" alt="傳統 RNN 逐字抄寫員的緩慢閱讀" />
-                    <div class="figure-caption">
-                        圖 1: 傳統 RNN 就像是一個慢速的「逐字抄寫員」。它必須讀完一個字，把記憶傳遞給下一個字，才能繼續。
-                    </div>
-                </div>
+
 
                 <p>
                     2017 年，Google 團隊發表了 Transformer 架構。它大膽地拋棄了傳統的循環結構，轉而使用<strong>注意力機制（Attention Mechanism）</strong>。它不再逐字閱讀，而是一口氣將整句話輸入模型。這種「全景式」的處理能力，徹底解決了長距離依賴問題。
                 </p>
-                <div class="article-figure">
-                    <img src="image_2_transformer_camera.png" alt="Transformer 如同照相機一口氣拍下整個句子" />
-                    <div class="figure-caption">
-                        圖 2: Transformer 如同一台全速的「照相機」。它一口氣將整句話輸入模型，同時捕捉所有單字之間的全面關係。
-                    </div>
-                </div>
 
                 <h3 id="self-attention">2. 聚焦的魔法：自我注意力機制 (Self-Attention)</h3>
                 <p>
-                    想像你正身處一個吵雜的雞尾酒會中，雖然周遭充滿雜音，但當角落有人提到你的名字，你的大腦會立刻將聽覺焦距「對焦」到那個對話上。<strong>自我注意力機制</strong>做的事情一模一樣。當模型在理解一個單字時，它會看句子裡的其他單字，計算出哪些單字與當前單字關聯度最高，進而給予更高的「注意力權重」。
+                    想像你正身處一個吵雜的酒會中，雖然周遭充滿雜音，但當角落有人提到你的名字，你的大腦會立刻將聽覺焦距「對焦」到那個對話上。<strong>自我注意力機制</strong>做的事情一模一樣。當模型在理解一個單字時，它會看句子裡的其他單字，計算出哪些單字與當前單字關聯度最高，進而給予更高的「注意力權重」。
                 </p>
                 <div class="article-figure">
                     <img src="image_3_self_attention_heatmap.png" alt="Self-Attention 熱力圖" />
                     <div class="figure-caption">
-                        圖 3: 透過自我注意力機制，模型可以判斷出代名詞 "it" 指代的是哪一個名詞。
+                        圖 1: 透過自我注意力機制，模型可以判斷出代名詞 "it" 指代的是哪一個名詞。
                     </div>
+                </div>
+
+                <div id="attentionDemo" class="attention-visualizer">
+                    <span class="token" data-weight="0.05">The</span>
+                    <span class="token" data-weight="0.85">animal</span>
+                    <span class="token" data-weight="0.05">didn't</span>
+                    <span class="token" data-weight="0.15">cross</span>
+                    <span class="token" data-weight="0.05">the</span>
+                    <span class="token" data-weight="0.25">street</span>
+                    <span class="token" data-weight="0.05">because</span>
+                    <span class="token highlight-trigger" data-weight="1.0">it</span>
+                    <span class="token" data-weight="0.05">was</span>
+                    <span class="token" data-weight="0.10">too</span>
+                    <span class="token" data-weight="0.50">tired.</span>
                 </div>
 
                 <h3 id="multi-head">3. 超能力觀察團：多頭注意力機制 (Multi-Head Attention)</h3>
                 <p>
-                    如果只使用一種維度去理解句子，可能會錯失細節。<strong>Multi-Head Attention</strong> 就是同時初始化多個不同的「注意力觀察頭」。每個「頭」獨立地在不同方面學習語意特徵（例如有人看主詞、有人看時態），最後再將觀察結果匯聚成全面的含義。
+                    但如果只使用一種思維去理解句子，可能會錯失細節。<strong>Multi-Head Attention</strong> 就是同時初始化多個不同的「注意力觀察頭」。每個「頭」獨立地在不同方面學習語意特徵（例如有人看主詞、有人看時態），最後再將觀察結果匯聚成全面的含義。
                 </p>
-                <div class="article-figure">
-                    <img src="image_4_multi_head_attention_observation.png" alt="Multi-Head Attention 示意圖" />
-                    <div class="figure-caption">
-                        圖 4: 多頭注意力機制的示意圖。不同「觀察頭」對同一個單字進行不同層面的觀察。
-                    </div>
-                </div>
 
                 <h3 id="positional-encoding">4. 給單字發號碼牌：位置編碼 (Positional Encoding)</h3>
                 <p>
                     因為 Transformer 是一口氣把所有單字丟進模型做平行運算，模型會失去對「順序」的感知。為了打破無序性，我們必須在單字進入注意力機制之前，給它們發一張<strong>「時間與空間號碼牌」</strong>。這就是位置編碼（Positional Encoding），幫助模型區分 "Dog eats fish" 和 "Fish eats dog" 的差別。
                 </p>
-                <div class="article-figure">
-                    <img src="image_5_positional_encoding_barcode.png" alt="位置編碼示意圖" />
-                    <div class="figure-caption">
-                        圖 5: 模型讀取位置條碼，就能輕易學習到單字之間的相對位置關係。
-                    </div>
-                </div>
 
                 <h3 id="architecture">5. AI 大師的誕生：完整架構解碼 (Encoder & Decoder)</h3>
                 <p>
                     經典的 Transformer 由兩大主體構成：一個負責「理解與消化」的工廠<strong>編碼器（Encoder）</strong>，與一個負責「生成與翻譯」的工廠<strong>解碼器（Decoder）</strong>。
                 </p>
+
+                <p>
+                    接下來，我們攤開 2017 年《Attention Is All You Need》論文中的經典架構圖，可以將這兩座工廠的運作邏輯進一步拆解為四大核心區塊：
+                </p>
+
                 <div class="article-figure">
-                    <img src="image_6_encoder_decoder_factory.png" alt="Encoder-Decoder 工廠大樓" />
+                    <img src="1_MKmVBgRiVQpPBe6YoEAgvw.webp" alt="Transformer 經典架構圖" />
                     <div class="figure-caption">
-                        圖 6: Transformer 的完整架構大樓。左半部（Encoder）負責消化生成語意核心，右半部（Decoder）接收核心並逐字生成翻譯或回覆。
+                        圖 2: Transformer 的經典架構圖。清楚展示了資料輸入、位置編碼，以及 Encoder 與 Decoder 內部的注意力機制流程。
                     </div>
                 </div>
+
+                <div class="callout-block default">
+                    <h4> 架構圖深度解析</h4>
+                    <ul>
+                        <li><strong>1. 資料輸入與位置編碼（底部）：</strong>
+                            <ul>
+                                <li><strong>Input / Output Embedding：</strong> 負責將文字序列轉換成機器能理解的高維度數學向量。</li>
+                                <li><strong>Positional Encoding：</strong> 在向量進入模型前發放「號碼牌」，打破矩陣平行運算造成的無序性，標示精確順序。</li>
+                            </ul>
+                        </li>
+                        <br>
+                        <li><strong>2. 編碼器 Encoder（左側大框）：</strong>
+                            <ul>
+                                <li><strong>Multi-Head Attention：</strong> 模型在這裡計算句子內部單字之間的關聯性，理解全局上下文。</li>
+                                <li><strong>Add & Norm 與 Feed Forward：</strong> 結合「殘差連接」與「層標準化」防止梯度消失，並透過前饋神經網路強化特徵。此區塊會重複堆疊 N 次加深理解。</li>
+                            </ul>
+                        </li>
+                        <br>
+                        <li><strong>3. 解碼器 Decoder（右側大框）：</strong>
+                            <ul>
+                                <li><strong>Masked Multi-Head Attention：</strong> 帶有「遮罩」的自我注意力層。強迫模型預測時只能參考過去已生成的詞彙，不能「偷看」未來。</li>
+                                <li><strong>Cross-Attention（中間橘色區塊）：</strong> Decoder 在生成文字時，會透過這個橋樑不斷地「回頭查閱」Encoder 整理好的語意重點矩陣。</li>
+                            </ul>
+                        </li>
+                        <br>
+                        <li><strong>4. 輸出預測（頂部）：</strong>
+                            <ul>
+                                <li><strong>Linear & Softmax：</strong> 當 Decoder 完成所有運算後，最終矩陣會轉換為「機率分佈」，模型藉此挑選出機率最高的字作為下一個生成的單字。</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+
+                <h3 id="qkv">6. 核心運作密碼：Query、Key、Value 的三位一體</h3>
+                <p>
+                    在理解了自我注意力機制的宏觀概念後，模型在底層到底是如何具體計算出「注意力權重」的？這就要歸功於 Transformer 中最精妙的數學設計：<strong>Query（查詢）</strong>、<strong>Key（鍵值）</strong> 與 <strong>Value（數值）</strong>。
+                </p>
+                <p>
+                    為了讓這三個抽象的向量變得容易理解，科學家常用<strong>「影音平台搜尋」</strong>或<strong>「圖書館查書」</strong>來做生動的比喻：
+                </p>
+                    <ul>
+                        <li><strong>Query (Q) — 「你的搜尋關鍵字」：</strong> 代表當前模型正在處理、試圖理解的那個單字。它就像你在 YouTube 搜尋框輸入的字串。</li>
+                        <li><strong>Key (K) — 「影片的標題與標籤」：</strong> 代表句子中所有單字的特徵檔案。模型會拿當前的 Query 去跟句子中每一個單字的 Key 進行相似度比對。</li>
+                        <li><strong>Value (V) — 「影片的實際內容」：</strong> 代表單字本身所蘊含的真正語意資訊。一旦 Query 與某個 Key 對上了，模型就會提取對應的 Value。</li>
+                    </ul>
+                <p>
+                    在實際的矩陣平行運算中，這三個向量會套用論文中定義的經典公式：<strong>「縮放點積注意力 (Scaled Dot-Product Attention)」</strong>。
+                </p>
+
+                <div class="article-figure" style="padding: 20px;">
+                    <img src="attention_formula.png" alt="Scaled Dot-Product Attention 公式" style="max-width: 450px; width: 100%; height: auto;" />
+                    <div class="figure-caption">
+                        圖 3: Scaled Dot-Product Attention 運算公式。公式中的 Q、K 內積代表計算相似度，而分母的平方根則是為了穩定梯度。
+                    </div>
+                </div>
+
+                <p>
+                    這個看似充滿數學符號的公式，其實可以精密地拆解為以下四個步驟，最終提煉出上下文精華：
+                </p>
+                
+                <div class="callout-block default">
+                    <h4> 自我注意力（Self-Attention）矩陣運算四部曲</h4>
+                    <ol>
+                        <li><strong>步驟一：相似度比對 (Dot Product)</strong><br>拿當前單字的 Q 向量，去跟句子中所有單字的 K 向量做內積（點積）運算，算出兩者之間的原始關聯分數。分數越高，代表兩個字在語意上越相關。</li>
+                        <li><strong>步驟二：穩定縮放 (Scaling)</strong><br>將算出來的分數除以 √d_k （d_k 為 Key 的向量維度）。這是為了防止當向量維度過高時，點積數值過大，導致後續梯度不穩定。</li>
+                        <li><strong>步驟三：歸一化分佈 (Softmax)</strong><br>將縮放後的分數通過 Softmax 函數，將它們轉換為範圍在 0 到 1 之間、且加總絕對等於 1 的「注意力權重百分比」。這也就是我們常看到的注意力熱力圖。</li>
+                        <li><strong>步驟四：加權總和 (Weighted Sum)</strong><br>用這些百分比權重作為係數，去乘以各個單字對應的 V 向量並全部加總。最終產出的全新向量，就是一個完美融合了周圍上下文語意的超強特徵表示！</li>
+                    </ol>
+                </div>
+
+                
+
             </section>
 
             <section id="part2" class="article-section">
@@ -168,11 +237,11 @@
 
                 <h3 id="llm">1. 語言的極致煉金術：大語言模型 (LLM)</h3>
                 <p>
-                    將解碼器（Decoder）發揮到極致的產物，專精於文字接龍與深度推理。
+                    這類模型是將解碼器（Decoder）架構發揮至極致的產物，專精於文字接龍與深度推理，也是 Transformer 演算法中最廣為人知的代表。如今，它已深深融入你我的日常生活；無論是面對學習、創作，還是探討各種日常問題，許多人不再優先詢問老師或同學，而是轉向 AI 尋求解答。我們目前最常使用的 AI 助手，幾乎皆屬於此一類型。
                 </p>
                 <div class="callout-block default">
                     <h4>🌟 代表模型：</h4>
-                    <p>OpenAI 的 <strong>GPT-4</strong>、Anthropic 的 <strong>Claude 3</strong>，以及 Meta 的開源巨頭 <strong>Llama 3</strong>。</p>
+                    <p>OpenAI 的 <strong>GPT-4</strong>、Anthropic 的 <strong>Claude 3</strong>、google 的 <strong>Gemini</strong>，以及 Meta 的開源巨頭 <strong>Llama 3</strong>。</p>
                 </div>
 
                 <h3 id="cv">2. 視覺的全新維度：電腦視覺 (Computer Vision)</h3>
@@ -240,13 +309,59 @@
                 
                 <h3 id="computing-power">1. 昂貴的智慧：算力霸權與環境隱憂</h3>
                 <p>
-                    訓練先進的 Transformer 模型需要成千上萬張高階 GPU 日以漸夜地運轉。這不僅讓頂尖 AI 的開發成為少數科技巨頭的「資本遊戲」，其背後消耗的龐大電力與水資源也帶來了不容忽視的環境碳排放問題。我們必須思考：在追求極致效能的同時，如何讓 AI 變得更「綠色」？
+                    訓練先進的 Transformer 模型需要成千上萬張高階 GPU 日以漸夜地運轉。這不僅讓頂尖 AI 的開發成為少數科技巨頭的「資本遊戲」，其背後消耗的龐大電力與水資源也帶來了不容忽視的環境碳排放問題。我們必須思考：在追求極致效能的同時，如何讓 AI 變得更節能？
                 </p>
 
                 <h3 id="black-box">2. 黑盒子裡的幽靈：AI 幻覺與可解釋性</h3>
                 <p>
                     儘管注意力機制能生成邏輯嚴密、流暢優美的文字，但 Transformer 本質上仍是基於機率分佈的「黑盒子」。它有時會無中生有，產生「一本正經胡說八道」的 AI 幻覺（Hallucination）。我們依然難以完全透視它內部決策的邏輯，這在醫療、法律等要求絕對精準的領域，仍是一大隱患。
                 </p>
+            </section>
+
+            <section id="part-appendix" class="article-section" style="background-color: #f8fbff; padding: 30px; border-radius: 8px; border-left: 5px solid #1b4f72; margin-top: 50px;">
+                <h2 style="margin-top: 0; border-bottom: none;">附錄：期末 AI 輔助學習歷程報告</h2>
+                <p class="lead-text" style="font-size: 1rem; background: transparent; border-left: none; padding-left: 0;">
+                    本區塊為呼應期末評量任務要求，記錄本次探索 Transformer 演算法的真實學習軌跡、AI 協作過程與反思。
+                </p>
+
+                <h3 id="ai-record"> AI 輔助學習紀錄</h3>
+                <p>在理解高度抽象的注意力機制時，單看數學公式難以立刻吸收，因此我請 AI 擔任「概念轉譯者」。</p>
+                <div class="callout-block info">
+                    <h4> 與 AI 的關鍵對話對話摘要</h4>
+                    <ul>
+                        <li><strong>我的問題：</strong>「請用大學生能聽懂的日常例子，向我解釋 Transformer 中的 Query, Key, Value 矩陣到底是什麼關係？不要只給我數學公式。」</li>
+                        <li><strong>AI 的回答重點：</strong>AI 提出了「YouTube 影音平台搜尋」的比喻。Query 是我在搜尋框輸入的「關鍵字」，Key 是資料庫裡每部影片的「標題與標籤」，Value 則是「影片的實際內容」。</li>
+                        <li><strong>對我的幫助：</strong>這個比喻瞬間打破了數學矩陣的抽象感，讓我立刻理解為什麼這三個矩陣需要分開訓練，以及它們在注意力機制中的協作關係，幫助我順利寫出專欄中的核心段落。</li>
+                    </ul>
+                </div>
+
+                <h3 id="verification"> 查證與修正</h3>
+                <p>在使用 AI 輔助學習時，為了確保技術文章的學術嚴謹性，我針對 AI 提供的概念進行了原典查證。</p>
+                <div class="callout-block warning">
+                    <h4> 查證紀錄：Scaled Dot-Product Attention 公式</h4>
+                    <ul>
+                        <li><strong>查證動機：</strong>AI 雖然給了很好的生動比喻，但身為資工系學生，我認為技術專欄不能只有文字，必須有嚴謹的數學依據。</li>
+                        <li><strong>查證過程：</strong>我親自去研讀了 2017 年《Attention Is All You Need》原始論文，在第 4 頁找到了真實的數學公式：<code>Attention(Q,K,V) = softmax(QK^T / √d_k)V</code>。</li>
+                        <li><strong>修正與優化：</strong>我確認了 AI 的比喻與公式邏輯完全吻合。隨後，我將原始論文的公式截圖補充到了我的網頁「核心運作密碼」段落中，並自行補上了「除以 √d_k 是為了防止梯度消失」的專業說明，彌補了 AI 原本只有純文字比喻的不足。</li>
+                    </ul>
+                </div>
+
+                <h3 id="personal-case">結合自身專案的應用案例</h3>
+                <p>除了常見的 ChatGPT (LLM) 應用，我更將 Transformer 的概念延伸到我個人正在開發的專案中：</p>
+                <div class="callout-block default">
+                    <h4> 台股 AI 選股與個人資產 APP (開發中)</h4>
+                    <p>我目前正在開發一款針對台股市場的應用程式。在學習了 Transformer 的「時間序列分析 (Time Series)」衍生模型（如 Informer 或 PatchTST）後，我發現其強大的長距離注意力機制，非常適合用來捕捉股票歷史價格、成交量與籌碼面數據的長短期週期變化。相較於傳統的 LSTM，Transformer 架構能更精準地進行個人資產預測與 AI 驅動的選股策略。</p>
+                </div>
+
+                <h3 id="reflection">個人學習反思</h3>
+                <p>
+                    這次的專題不僅是學習一個演算法，更是體驗一種全新的學習模式。
+                </p>
+                <ul>
+                    <li><strong>AI 對學習的幫助：</strong>在前端實作上，AI 幫助我大幅縮短了 JavaScript 的開發時間（如實作滑鼠 hover 單字的互動特效）。在理論學習上，AI 就像一位隨叫隨到的家教，幫我把艱澀的論文語言「降維打擊」成人類語言。</li>
+                    <li><strong>AI 回答的限制：</strong>AI 很容易為了「討好」使用者而給出看似通順但缺乏深度的答案。如果我不主動追問底層邏輯，或是自己去查閱論文，很容易只學到皮毛。</li>
+                    <li><strong>真正學到了什麼：</strong>我不僅徹底搞懂了 Self-Attention 的運作原理，更學會了如何「與 AI 協作」。我負責規劃架構、定義比喻邏輯、查證公式與撰寫程式邏輯，而 AI 負責幫我加速產出與優化語句。這讓我體會到，未來的工程師價值不在於死記硬背，而在於「架構思維」與「查證能力」。</li>
+                </ul>
             </section>
 
             <section id="part5" class="article-section">
@@ -264,8 +379,7 @@
             </section>
 
             <footer class="article-footer">
-                <p>© 2026 Designed & Written by <span class="author-name">黃昱翔(資二甲 111316029)</span>. 本技術專案採 MIT 授權開源。</p>
-                <p class="footer-subtext">技術棧：Semantic HTML5, Modular CSS3, Vanilla JavaScript (Intersection Observer)</p>
+                <p>© 2026 Designed & Written by <span class="author-name">黃昱翔(資二甲 111316029)</span>.</p>
             </footer>
         </main>
     </div>
