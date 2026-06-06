@@ -341,16 +341,9 @@
                     <h4> 查證紀錄：Scaled Dot-Product Attention 公式</h4>
                     <ul>
                         <li><strong>查證動機：</strong>AI 雖然給了很好的生動比喻，但身為資工系學生，我認為技術專欄不能只有文字，必須有嚴謹的數學依據。</li>
-                        <li><strong>查證過程：</strong>我親自去研讀了 2017 年《Attention Is All You Need》原始論文，在第 4 頁找到了真實的數學公式：<code>Attention(Q,K,V) = softmax(QK^T / √d_k)V</code>。</li>
+                        <li><strong>查證過程：</strong>我親自去研讀了 2017 年《Attention Is All You Need》原始論文，在第 4 頁找到了真實的數學公式。</li>
                         <li><strong>修正與優化：</strong>我確認了 AI 的比喻與公式邏輯完全吻合。隨後，我將原始論文的公式截圖補充到了我的網頁「核心運作密碼」段落中，並自行補上了「除以 √d_k 是為了防止梯度消失」的專業說明，彌補了 AI 原本只有純文字比喻的不足。</li>
                     </ul>
-                </div>
-
-                <h3 id="personal-case">結合自身專案的應用案例</h3>
-                <p>除了常見的 ChatGPT (LLM) 應用，我更將 Transformer 的概念延伸到我個人正在開發的專案中：</p>
-                <div class="callout-block default">
-                    <h4> 台股 AI 選股與個人資產 APP (開發中)</h4>
-                    <p>我目前正在開發一款針對台股市場的應用程式。在學習了 Transformer 的「時間序列分析 (Time Series)」衍生模型（如 Informer 或 PatchTST）後，我發現其強大的長距離注意力機制，非常適合用來捕捉股票歷史價格、成交量與籌碼面數據的長短期週期變化。相較於傳統的 LSTM，Transformer 架構能更精準地進行個人資產預測與 AI 驅動的選股策略。</p>
                 </div>
 
                 <h3 id="reflection">個人學習反思</h3>
